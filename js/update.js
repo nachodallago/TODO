@@ -10,7 +10,7 @@ const fs = require('fs');
 var app_library = (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")) + "\\";
 
 var git_api;
-var new_version = "0.0.1";
+var new_version = "0.0.2";
 var current_version = "0.0.1";
 
 var dl_bar = null;
