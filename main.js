@@ -2,17 +2,33 @@ function getProjects(){
     const template = document.getElementById('template-lista')
     const lista_items = document.querySelector('#lista-proyectos');
     lista_items.innerHTML='';
-    // if(typeof(localStorage.getItem("proyectos"))=='undefined'){
+
     if(localStorage.getItem("proyectos")==null){
         return false;
     } else {
         var data = JSON.parse(localStorage.getItem("proyectos") || '[]');
-        // data.forEach(function (items) {
         for (var i = 0; i < data.length; i++) {
             template.querySelector('#titulo').innerHTML = data[i].titulo
+            // template.querySelector('#titulo').setAttribute('href','#'+data[i].id)
+            //template.querySelector('#titulo').setAttribute('aria-controls',data[i].id)
             template.querySelector('.item-borrar').setAttribute('id',data[i].id)
+            var completed=0,total=0;
+            for(var ii = 0; ii < data[i].lista.length; ii++){
+                total++;
+                if(data[i].lista[ii].estado==1){var checked=' checked';completed++;}else{var checked=''}
+                template.querySelector('.detalles').innerHTML += '<label class="control control-checkbox" data-id="'+ii+'">'+data[i].lista[ii].title+'<input type="checkbox" '+checked+'/><div class="control_indicator"></div></label>' 
+            }
+            template.querySelector('.item-porcentaje').innerHTML = completed/total*100 + '%';
+
             lista_items.innerHTML += template.innerHTML
+
         }
+
+        // for (var icount = 0; icount < data.length; icount++) {
+        //     document.querySelectorAll('.item-proyecto')[icount].addEventListener('click', function(e){
+        //         document.querySelectorAll('.item-proyecto')[icount].querySelector('.detalles').style.display='block'             
+        //     })
+        // }
 
         const lista_items_borrar = document.querySelectorAll('.item-borrar');
         for (var i = 0; i < data.length; i++) {
@@ -21,6 +37,7 @@ function getProjects(){
                 removeItem(this.getAttribute('id'))
                 getProjects()
             })
+
         }
 
     }
@@ -66,4 +83,9 @@ function removeItem(id){
     items = JSON.stringify(items); //Restoring object left into items again
 
     localStorage.setItem("proyectos", items);
+}
+
+function eliminarItemlista(id){
+    var eliminar= document.getElementById("itemlista_"+id);
+    eliminar.remove();
 }
