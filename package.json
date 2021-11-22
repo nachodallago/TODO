@@ -1,0 +1,43 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "Aplicación de gestión de tareas",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "ToDo Project Manager",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "icon.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "uninstallDisplayName": "TODO - NDL",
+      "license": "license.txt",
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "keywords": [
+    "Electron",
+    "ToDo",
+    "Gestion",
+    "Tareas"
+  ],
+  "author": "Nacho Dal Lago",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^16.0.1",
+    "electron-builder": "^22.14.5"
+  },
+  "dependencies": {
+    "uaup-js": "^0.0.22"
+  }
+}
