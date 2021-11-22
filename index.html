@@ -194,10 +194,10 @@
     <div id="template-lista" style="display: none;">
       <div class="card card-body shadow-sm border-0 mb-2 item-proyecto">
         <div class="row">
-          <div class="col-10">
+          <div class="col-9">
             <h6 id="titulo" data-bs-toggle="collapse" role="button" aria-expanded="false" ></h6>
           </div>
-          <div class="col-2 text-end">
+          <div class="col-3 text-end">
             <span class="item-porcentaje text-primary">90%</span> <span class="item-borrar"><i class="fas fa-trash-alt text-danger"></i></span>
           </div>
           <div class="detalles control-group"></div>
@@ -224,6 +224,7 @@
             hasta: document.querySelector('.input-hasta').value,
             lista: itemlista
           }
+          mostrar_itemlista.innerHTML='';
           //console.log(JSON.stringify(inputs))
           createProject(inputs);
           getProjects()

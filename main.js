@@ -1,38 +1,59 @@
-function getProjects(){
+const convertir = JSON.stringify;
+function getProjects() {
     const template = document.getElementById('template-lista')
     const lista_items = document.querySelector('#lista-proyectos');
-    lista_items.innerHTML='';
+    lista_items.innerHTML = '';
 
-    if(localStorage.getItem("proyectos")==null){
+    if (localStorage.getItem("proyectos") == null) {
         return false;
     } else {
         var data = JSON.parse(localStorage.getItem("proyectos") || '[]');
         for (var i = 0; i < data.length; i++) {
+            var completed = 0, total = 0, porcentaje = 0, tpl_detalles = template.querySelector('.detalles');
             template.querySelector('#titulo').innerHTML = data[i].titulo
             // template.querySelector('#titulo').setAttribute('href','#'+data[i].id)
             //template.querySelector('#titulo').setAttribute('aria-controls',data[i].id)
-            template.querySelector('.item-borrar').setAttribute('id',data[i].id)
-            var completed=0,total=0;
-            for(var ii = 0; ii < data[i].lista.length; ii++){
+            template.querySelector('.item-borrar').setAttribute('id', data[i].id)
+
+            for (var ii = 0; ii < data[i].lista.length; ii++) {
                 total++;
-                if(data[i].lista[ii].estado==1){var checked=' checked';completed++;}else{var checked=''}
-                template.querySelector('.detalles').innerHTML += '<label class="control control-checkbox" data-id="'+ii+'">'+data[i].lista[ii].title+'<input type="checkbox" '+checked+'/><div class="control_indicator"></div></label>' 
+                if (data[i].lista[ii].estado == 1) { var checked = ' checked'; completed++; } else { var checked = '' }
+                tpl_detalles.innerHTML += '<label class="control control-checkbox" data-id="' + ii + '" data-dependence="'+i+'">' + data[i].lista[ii].title + '<input type="checkbox" ' + checked + '/><div class="control_indicator"></div></label>'
             }
-            template.querySelector('.item-porcentaje').innerHTML = completed/total*100 + '%';
 
+            if (completed != 0 && total != 0) {
+                porcentaje = completed / total * 100
+            }
+            
+            template.querySelector('.item-porcentaje').innerHTML = porcentaje.toFixed(2) + '%';
             lista_items.innerHTML += template.innerHTML
+            tpl_detalles.innerHTML = ''
 
+            /* FIN RENDER */
+
+            
         }
 
-        // for (var icount = 0; icount < data.length; icount++) {
-        //     document.querySelectorAll('.item-proyecto')[icount].addEventListener('click', function(e){
-        //         document.querySelectorAll('.item-proyecto')[icount].querySelector('.detalles').style.display='block'             
-        //     })
-        // }
-
+        /* BOTONES */
+        /* CHECK */
+        var itemsToDo = document.querySelectorAll('.item-proyecto .detalles label');
+        for (var iii = 0; iii < itemsToDo.length; iii++) {
+            itemsToDo[iii].addEventListener('click', function (e) {
+                var itemlabelestado=data[this.getAttribute('data-dependence')]["lista"][this.getAttribute('data-id')].estado;
+                if(itemlabelestado==0){
+                    data[this.getAttribute('data-dependence')]["lista"][this.getAttribute('data-id')].estado=1;
+                } else {
+                    data[this.getAttribute('data-dependence')]["lista"][this.getAttribute('data-id')].estado=0;
+                }
+                localStorage.setItem('proyectos', convertir(data));
+                getProjects()
+                e.preventDefault()
+            })
+        }
+        /* BORRAR */
         const lista_items_borrar = document.querySelectorAll('.item-borrar');
         for (var i = 0; i < data.length; i++) {
-            lista_items_borrar[i].addEventListener('click', function(e){
+            lista_items_borrar[i].addEventListener('click', function (e) {
                 console.log(this.getAttribute('id'))
                 removeItem(this.getAttribute('id'))
                 getProjects()
@@ -42,9 +63,8 @@ function getProjects(){
 
     }
 }
-const convertir = JSON.stringify;
-function createProject(data){
-    if(localStorage.getItem("proyectos")==null){
+function createProject(data) {
+    if (localStorage.getItem("proyectos") == null) {
         data = [data]
         console.log('entri')
         localStorage.setItem("proyectos", convertir(data));
@@ -54,10 +74,10 @@ function createProject(data){
     const inputs_form = document.querySelectorAll('#nuevo input')
 
     for (var i = 0; i < inputs_form.length; i++) {
-        inputs_form[i].value=''
+        inputs_form[i].value = ''
     }
 }
-function addItemLocalStorage(add_item, name='proyectos') {
+function addItemLocalStorage(add_item, name = 'proyectos') {
     // parse existing storage key or string representation of empty array
     var existingEntries = JSON.parse(localStorage.getItem(name) || '[]');
     console.log(add_item)
@@ -70,10 +90,10 @@ function addItemLocalStorage(add_item, name='proyectos') {
         console.log(add_item.id + ' already exists')
     }
 }
-function removeItem(id){
+function removeItem(id) {
     var items = JSON.parse(localStorage.getItem("proyectos")); // updated
 
-    for (var i =0; i< items.length; i++) {
+    for (var i = 0; i < items.length; i++) {
         // var items = JSON.parse(items[i]);
         if (items[i].id == id) {
             items.splice(i, 1);
@@ -85,7 +105,7 @@ function removeItem(id){
     localStorage.setItem("proyectos", items);
 }
 
-function eliminarItemlista(id){
-    var eliminar= document.getElementById("itemlista_"+id);
+function eliminarItemlista(id) {
+    var eliminar = document.getElementById("itemlista_" + id);
     eliminar.remove();
 }
