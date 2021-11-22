@@ -10,8 +10,8 @@ const fs = require('fs');
 var app_library = (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")) + "\\";
 
 var git_api;
-var new_version = "unknown";
-var current_version = "unknown";
+var new_version = "0.0.1";
+var current_version = "0.0.1";
 
 var dl_bar = null;
 var dl_label = null;
@@ -30,19 +30,14 @@ const defaultOptions = {
     useGithub: true,
     gitRepo: "TODO",
     gitUsername: "nachodallago",
-    isGitRepoPrivate: false,
-    gitRepoToken: "uknown",
 
     appName: "todo",
     appExecutableName: this.appName + "",
 
-    appDirectory: app_library + this.appName,
-    versionFile: this.appDirectory + "/settings/version.json",
-    tempDirectory: this.appDirectory + "/tmp",
 
     progressBar: null,
     label: null,
-    forceUpdate: false,
+    forceUpdate: true,
     stageTitles: defaultStages
 };
 
