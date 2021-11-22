@@ -18,9 +18,9 @@ function crearVentanaPrincipal(){
 app.whenReady().then(crearVentanaPrincipal);
 
 app.on('window-all-closed', function(){
-    if(process.platform == 'darwin'){
+    // if(process.platform == 'darwin'){
         app.quit();
-    }
+    // }
 })
 
 app.on('activate', function(){
